@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional
 
-from .config import config
+from ..config import config
 
 def save_output(content: str, filename: str, subfolder: str = "") -> Path:
     """

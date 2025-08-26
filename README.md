@@ -13,7 +13,9 @@ Cookbook is a personal toolkit of Python scripts that automate the tedious parts
 Think of it as your automation catalog: individual recipes that work standalone, but can be combined to create more complex workflows.
 
 ## Personal Motivation
-This project exists because I got tired of doing the same manual tasks over and over again. As someone with ADHD, I need external systems to handle the routine stuff so my brain can focus on the important stuff.
+
+This project exists because I got tired of doing the same manual tasks over and over again. As someone with ADHD, I need external systems to handle the routine tasks so my brain can focus on the important stuff.
+
 Every script in this collection solves a real friction point in my daily workflow:
 
 - **Meeting transcripts** - I record everything but never had time to review what was said.
@@ -23,7 +25,31 @@ Every script in this collection solves a real friction point in my daily workflo
 
 The goal isn't to automate everything, but to automate the annoying things that drain mental energy without adding value. I'm designing each recipe to work with my natural workflow, not how productivity apps think I should work.
 
-## Quick Start
+## Technical Principles
+
+### Keep It Simple
+- Each script solves exactly one problem
+- Prefer composition over complexity
+- Add features based on actual usage, not speculation
+
+### Local First
+- Work offline when possible
+- User owns their data
+- Privacy-first approach with local LLMs when needed
+
+### Gradual Adoption
+- Each phase builds on the previous
+- Scripts work independently before integration
+- Easy to disable/modify any component
+
+### ADHD-Friendly Design
+- Reduce cognitive load, don't add it
+- Automate the boring parts, surface the important parts
+- Clear feedback on what's happening
+
+## Getting Started
+
+### Quick Start
 
 ```bash
 git clone https://github.com/dovalization/cookbook.git
@@ -32,8 +58,22 @@ pip install -r requirements.txt
 cp .env.example .env  # Configure your settings
 
 # Try a recipe
-python -m scripts.scrape_webpage https://example.com/article
+python -m scripts.example_script input.txt
 ```
+
+### Technology Stack
+- **Backend**: Python with FastAPI for future dashboard API
+- **Frontend**: Next.js with TypeScript (future phases)
+- **Database**: SQLite for development/simple deployments
+- **Authentication**: OAuth 2.0 with secure token storage
+- **Development**: Docker + Docker Compose
+- **Testing**: pytest with mocking for APIs
+
+### Development Philosophy
+- **Build what you need, when you need it**
+- **Start with manual processes, then automate the painful parts**  
+- **Every script should solve a real problem you're actually having**
+- **Perfection is the enemy of automation**
 
 ## Repository Structure
 
@@ -46,7 +86,23 @@ cookbook/
 └── tests/           # Keep your recipes working
 ```
 
-## Available Recipes
+## Current Status
+
+### ✅ What We Have
+- **Project Structure**: Proper Python package with scripts/, shared/, workflows/, tests/
+- **Configuration System**: Basic config management with environment variables
+- **File Utilities**: Functions for saving outputs and organizing processed files
+- **Script Template**: Working example showing the pattern for new automation scripts
+- **Dependencies**: Requirements defined for AI, audio, PDF, and web processing
+- **Documentation**: Clear vision and philosophy
+
+### 🔄 What We're Building
+- **LLM Integration**: AI processing capabilities with flexible provider support
+- **Content Processing**: Standardized pipeline for extracting insights from various sources
+- **Storage/Tracking**: Database to track processed items and avoid reprocessing
+- **Actual Automation**: Real scripts that solve daily friction points
+
+## Planned Recipes
 
 ### 🎵 Audio & Content
 - **transcribe_audio** - Turn audio files into text transcripts
@@ -68,7 +124,7 @@ cookbook/
 - **backup_workspace** - Sync important data to multiple locations
 - **clean_duplicates** - Find and remove duplicate files
 
-## Workflows (Recipe Combinations)
+## Future Workflows (Recipe Combinations)
 
 ### Meeting Processor
 Audio file → Transcription → Summary → Organized notes
@@ -93,16 +149,42 @@ python -m workflows.content_pipeline input.* --auto-tag
 Copy `.env.example` to `.env` and configure:
 
 ```bash
-# Obsidian vault path
-OBSIDIAN_VAULT_PATH="/path/to/your/vault"
+# File processing paths
+INBOX_PATH="./inbox"
+OUTPUT_PATH="./output"
+BACKUP_PATH="./backup"
 
-# API keys (optional)
-OPENAI_API_KEY="your-key-here"
+# LLM Configuration
+OPENAI_API_KEY=""           # For OpenAI models
+ANTHROPIC_API_KEY=""        # For Claude models
+OLLAMA_BASE_URL="http://localhost:11434"  # For local models
 
-# Storage locations
-INBOX_PATH="/path/to/inbox"
-PROCESSED_PATH="/path/to/processed"
+# Processing settings
+DEFAULT_LLM_PROVIDER="ollama"  # ollama, openai, or anthropic
+ENABLE_AI_PROCESSING="true"     # false to disable AI features
+
+# System
+LOG_LEVEL="INFO"
+DATABASE_PATH="./cookbook.db"
 ```
+
+## Development Roadmap
+
+For detailed development phases and milestones, see [ROADMAP.md](ROADMAP.md).
+
+### Current Phase: Core Foundation
+We're building the essential infrastructure:
+1. **LLM Abstraction Layer** - Flexible AI provider interface
+2. **Content Processing Pipeline** - Standardized text processing
+3. **Enhanced File Utilities** - Robust file handling and organization
+4. **Testing Infrastructure** - Solid testing foundation
+5. **Docker Setup** - Containerized development environment
+
+### Next Steps
+1. Complete LLM abstraction with API provider support
+2. Build basic content processing capabilities
+3. Set up Docker development environment
+4. Create first real automation script (likely `summarize_content.py`)
 
 ## Recipe Template
 
@@ -130,39 +212,30 @@ if __name__ == "__main__":
 
 ### Standalone Scripts
 ```bash
-# Transcribe a meeting recording
+# Transcribe a meeting recording (future)
 python -m scripts.transcribe_audio meeting.wav
 
-# Scrape an article for research
+# Scrape an article for research (future)
 python -m scripts.scrape_webpage https://blog.example.com/post --tags research,ai
 
-# Summarize any text file
+# Summarize any text file (future)
 python -m scripts.summarize_content document.txt
 ```
 
-### Workflow Chains
+### Current Working Example
 ```bash
-# Full meeting processing pipeline
-python -m workflows.meeting_flow recording.wav \
-  --transcribe \
-  --summarize \
-  --create-note \
-  --extract-action-items
-
-# Research workflow
-python -m workflows.research_flow https://paper.arxiv.org/1234 \
-  --summarize \
-  --extract-concepts \
-  --suggest-tags
+# Process any text file with basic metadata
+python -m scripts.example_script input.txt --move-original
 ```
 
-## Integration Points
+## Integration Philosophy
 
-Cookbook plays nicely with:
+Cookbook is designed to work with your existing tools:
 - **Local LLMs** - Uses OLLAMA for privacy-first AI processing  
 - **File watchers** - Can monitor folders for automatic processing
 - **Git hooks** - Trigger workflows on repository changes
 - **Homelabs** - Designed to run on personal infrastructure
+- **Future**: Slack, Google Workspace, Jira integration
 
 ## Development
 
@@ -174,37 +247,32 @@ Cookbook plays nicely with:
 4. Write tests in `tests/`
 5. Update this README
 
-### Testing Recipes
+### Running Tests
 ```bash
-# Test individual scripts
+# Test individual scripts (when available)
 python -m pytest tests/test_script_name.py
 
-# Test workflows
+# Test workflows (when available)
 python -m pytest tests/test_workflows.py
 
 # Run all tests
 python -m pytest
 ```
 
-### Shared Utilities
+### Docker Development (Coming Soon)
+```bash
+# Build and run development environment
+docker-compose up --build
 
-Common functionality lives in `shared/`:
-- `storage.py` - SQLite helpers for tracking processed items
-- `config.py` - Configuration management
-- `utils.py` - General helpers (file operations, text processing)
-
-## Philosophy
-
-- **One Recipe, One Job** - Each script solves exactly one problem well.
-- **Composable** - Scripts can be chained together for complex workflows.
-- **Local First** - Runs on your infrastructure, your data stays yours.
-- **ADHD Friendly** - Reduces cognitive load by automating tedious tasks.
-- **Iterative** - Start simple, evolve based on actual usage.
+# Run tests in container
+docker-compose run cookbook pytest
+```
 
 ## Requirements
 
 - Python 3.9+
 - See `requirements.txt` for package dependencies
+- Optional: Docker for containerized development
 - Optional: OLLAMA for local AI processing
 - Optional: FFmpeg for audio/video processing
 
@@ -214,3 +282,4 @@ Personal use. Feel free to fork and adapt for your own automation needs.
 
 ---
 
+*Remember: The best automation is the one you actually use. Start simple, solve real problems, and let the system grow organically based on your actual needs.*

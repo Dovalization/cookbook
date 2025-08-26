@@ -2,6 +2,8 @@
 
 A collection of automation recipes for streamlining personal workflows, knowledge management, and everyday digital tasks in the era of artificial intelligence.
 
+*Cookbook: Because good automation, like good cooking, starts with having the right recipes.*
+
 ⚠️ This project is a work in progress, some recipes may be incomplete, broken, or not fully tested. That said, contributions are welcome! ⚠️
 
 ## What is Cookbook?
@@ -157,7 +159,6 @@ python -m workflows.research_flow https://paper.arxiv.org/1234 \
 ## Integration Points
 
 Cookbook plays nicely with:
-- **Obsidian** - Auto-creates notes with proper frontmatter and tags
 - **Local LLMs** - Uses OLLAMA for privacy-first AI processing  
 - **File watchers** - Can monitor folders for automatic processing
 - **Git hooks** - Trigger workflows on repository changes
@@ -188,7 +189,6 @@ python -m pytest
 ### Shared Utilities
 
 Common functionality lives in `shared/`:
-- `obsidian.py` - Vault operations (create notes, update metadata)
 - `storage.py` - SQLite helpers for tracking processed items
 - `config.py` - Configuration management
 - `utils.py` - General helpers (file operations, text processing)
@@ -214,4 +214,3 @@ Personal use. Feel free to fork and adapt for your own automation needs.
 
 ---
 
-*Cookbook: Because good automation, like good cooking, starts with having the right recipes.*

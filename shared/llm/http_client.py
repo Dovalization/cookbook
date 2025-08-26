@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from shared.errors import LLMError, LLMRateLimit, LLMAuthError
+from ..errors import LLMError, LLMRateLimit, LLMAuthError
 
 
 class HttpClient:

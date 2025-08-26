@@ -4,11 +4,8 @@ Simple test script to verify LLM abstraction layer works.
 Run this to check if your LLM setup is working correctly.
 """
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent))
-
 from shared.llm import LLM, LLMConfig
+import sys
 
 def test_basic_functionality():
     """Test basic LLM functionality with different providers."""

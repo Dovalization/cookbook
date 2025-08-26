@@ -2,6 +2,8 @@
 
 A collection of automation recipes for streamlining personal workflows, knowledge management, and everyday digital tasks in the era of artificial intelligence.
 
+⚠️ This project is a work in progress, some recipes may be incomplete, broken, or not fully tested. That said, contributions are welcome! ⚠️
+
 ## What is Cookbook?
 
 Cookbook is a personal toolkit of Python scripts that automate the tedious parts of work. Each "recipe" solves a specific problem - transcribing audio, scraping web content, organizing files, or connecting different parts of your digital workflow.

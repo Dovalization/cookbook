@@ -12,15 +12,9 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-from shared.config import config
-from shared.file_utils import save_output, move_to_processed
+from shared.utils import setup_logging, save_output, move_to_processed
 
-# Set up logging
-logging.basicConfig(
-    level=getattr(logging, config.LOG_LEVEL),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+logger = setup_logging(__name__)
 
 def process_file(input_path: Path, tags: List[str] = None) -> Path:
     """

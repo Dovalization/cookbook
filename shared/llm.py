@@ -168,10 +168,16 @@ class LLM:
         # HttpClient encapsulates session + retry behaviour.
         self._client = HttpClient(timeout_s=self.cfg.timeout_s, max_retries=self.cfg.max_retries)
         # Adapter instances handle provider-specific payload/parse logic.
-        self._adapters: Dict[str, Callable[[], Any]] = {
+        self._adapters: Dict[str, Any] = {
             "openai": OpenAIAdapter(),
             "anthropic": AnthropicAdapter(),
             "ollama": OllamaAdapter(),
+        }
+        # Provider method routing
+        self._providers: Dict[str, Callable[[List[ChatMessage]], LLMResult]] = {
+            "openai": self._chat_openai,
+            "anthropic": self._chat_anthropic,
+            "ollama": self._chat_ollama,
         }
 
     @staticmethod
@@ -200,6 +206,25 @@ class LLM:
         if not handler:
             raise LLMError(f"Unsupported provider: {self.cfg.provider}")
         return handler(messages)
+    
+    # Convenience methods for common use cases
+    def summarize(self, text: str, style: str = "concise") -> str:
+        """Summarize text with optional style guidance."""
+        messages = [
+            {"role": "system", "content": f"Summarize the following text in a {style} manner."},
+            {"role": "user", "content": text}
+        ]
+        result = self.chat(messages)
+        return result.text
+    
+    def extract_tags(self, text: str, max_tags: int = 5) -> List[str]:
+        """Extract relevant tags from text."""
+        messages = [
+            {"role": "system", "content": f"Extract up to {max_tags} relevant tags from the text. Return only the tags, one per line."},
+            {"role": "user", "content": text}
+        ]
+        result = self.chat(messages)
+        return [tag.strip() for tag in result.text.split('\n') if tag.strip()]
 
     # -------------------------
     # Provider routing
@@ -218,4 +243,4 @@ class LLM:
 
 
 
-# Helper functions moved to adapters; LLM is now a thin dispatcher.
+

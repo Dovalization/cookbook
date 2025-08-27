@@ -27,13 +27,16 @@ class HttpClient:
                 resp = self.session.post(url, headers=headers, json=json, timeout=self.timeout_s)
                 if resp.status_code in (429, 408):
                     raise LLMRateLimit(f"Rate limited or timeout: {resp.status_code} {resp.text[:200]}")
-                if 500 <= resp.status_code < 600:
-                    raise LLMError(f"Server error {resp.status_code}: {resp.text[:200]}")
                 if resp.status_code in (401, 403):
                     raise LLMAuthError(f"Auth failed: {resp.text[:200]}")
+                if 500 <= resp.status_code < 600:
+                    raise LLMError(f"Server error {resp.status_code}: {resp.text[:200]}")
                 resp.raise_for_status()
                 return resp.json()
-            except (requests.RequestException, LLMError) as e:
+            except (LLMRateLimit, LLMAuthError):
+                # Don't retry on rate limit or auth errors - re-raise immediately
+                raise
+            except (requests.RequestException, LLMError, ValueError) as e:
                 last_err = e
                 if attempt == self.max_retries:
                     break
